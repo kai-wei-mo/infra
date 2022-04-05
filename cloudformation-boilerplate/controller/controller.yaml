@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  EC2I4AVKQ:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      IamInstanceProfile: controller-i
+      ImageId: ami-052efd3df9dad4825
+      InstanceType: t2.medium
+      KeyName: controller-kp
+      SecurityGroupIds:
+        - sg-08dfb8d38dfd33b2c
+      SubnetId: subnet-0f031618af041d6b6
+      Tags:
+      - Key: Name
+        Value: controller
+      UserData:
+        Fn::Base64: 
+          !Sub |
+            #!/bin/bash
+
+            # Debian / Ubuntu systems
+            apt update -y
+            apt install wget curl unzip -y
+
+            # install Terraform v1.2.7 as terraform127
+            wget https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip
+            unzip terraform_1.2.7_linux_amd64.zip
+            mv terraform terraform127
+            mv terraform127 /usr/local/bin/
+
+            # install awscli v2
+            # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
+            rm -rf aws
+            rm awscliv2.zip
+  IAMIP4Y3AR:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      InstanceProfileName: controller-i
+      Roles:
+        - controller-r
