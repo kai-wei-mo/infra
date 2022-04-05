@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  EC2I4AVKQ:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      IamInstanceProfile: controller-i
+      ImageId: ami-04505e74c0741db8d
+      InstanceType: t2.medium
+      KeyName: sophi-dmz-controller-kp
+      SecurityGroupIds:
+        - sg-0d25c186ce3d30eec
+      SubnetId: subnet-0c4cd3f1481c81753
+      Tags:
+      - Key: Name
+        Value: controller
+      UserData:
+        Fn::Base64: 
+          !Sub |
+            #!/bin/bash
+
+            # Debian / Ubuntu systems
+            apt update -y
+            apt install wget curl unzip -y
+
+            # install Terraform v1.0.9 as terraform109
+            wget https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip
+            unzip terraform_1.0.9_linux_amd64.zip
+            mv terraform terraform109
+            mv terraform109 /usr/local/bin/
+
+            # install awscli v2
+            # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
+            rm -rf aws
+            rm awscliv2.zip
+    DependsOn:
+      - IAMIP4Y3AR
+  IAMIP4Y3AR:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      InstanceProfileName: controller-i
+      Roles:
+        - controller-r
