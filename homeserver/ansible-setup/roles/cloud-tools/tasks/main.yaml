@@ -1,0 +1,8 @@
+---
+# Cloud Tools Installation
+
+# Include terraform installation
+- include_tasks: terraform.yaml
+
+# Include cloud provider specific tasks
+- include_tasks: aws.yaml

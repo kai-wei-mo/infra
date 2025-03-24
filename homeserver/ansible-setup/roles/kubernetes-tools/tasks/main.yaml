@@ -1,0 +1,7 @@
+---
+# Kubernetes Tools Installation
+
+# Include individual tool installations
+- include_tasks: kubectl.yaml
+- include_tasks: minikube.yaml
+- include_tasks: helm.yaml

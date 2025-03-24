@@ -1,0 +1,5 @@
+---
+# Common system tasks
+
+# System updates and common dependencies
+- include_tasks: system-updates.yaml
