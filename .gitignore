@@ -1,4 +1,5 @@
 .DS_Store
+.terraform.lock.hcl
 
 # https://github.com/github/gitignore/blob/main/Terraform.gitignore
 
